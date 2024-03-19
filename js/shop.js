@@ -78,27 +78,99 @@ var total = 0;
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cart array
+    let productFind = products.find(product => product.id === id);
+    
+    if (productFind) {
+        let productInCart = cart.find(element => element.id === id)
+
+        if(productInCart) {
+            productInCart.quantity ++
+        } else {
+            cart.push({ ...productFind, quantity: 1})
+        }
+    } 
+
+    applyPromotionsCart()
+    printCart()
+
 }
+
 
 // Exercise 2
 function cleanCart() {
-
+    let conf = confirm('Are you sure you want to empty the cart?')
+    if (conf){
+        cart = []
+    }
+    
+    printCart()
+    
 }
+
 
 // Exercise 3
 function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
+    let totalPrice = 0;
+    for(let i = 0; i < cart.length; i++) {
+        let product = cart[i]
+        totalPrice += product.subtotalWithDiscount
+    }
+
+    return totalPrice
+    
 }
 
 // Exercise 4
 function applyPromotionsCart() {
     // Apply promotions to each item in the array "cart"
+   
+
+    for(let i = 0; i < cart.length; i++) {
+        let product = cart[i]
+        let productTotalPrice = product.price * product.quantity
+        
+        if (product.offer){
+            if(product.quantity >= product.offer.number){
+                product.subtotalWithDiscount = productTotalPrice - (productTotalPrice * (product.offer.percent / 100))
+            } else {
+                product.subtotalWithDiscount = productTotalPrice
+            }
+        } else {
+            product.subtotalWithDiscount = productTotalPrice
+        }
+    }
+
+    
 }
 
 // Exercise 5
 function printCart() {
     // Fill the shopping cart modal manipulating the shopping cart dom
+    let cartList = document.getElementById('cart_list')
+    cartList.innerHTML = ''
+    cart.forEach(element => {
+        let content = document.createElement('tr')
+        content.innerHTML = `
+        	<th scope="row">${element.name}</th>
+			<td>${element.price}</td>
+			<td>${element.quantity}</td>
+			<td>${element.subtotalWithDiscount}</td>
+        `
+        cartList.appendChild(content)
+    })
+
+    let showTotal = document.getElementById('total_price')
+    showTotal.innerHTML = `${calculateTotal()}`
+
+    let countProduct = document.getElementById('count_product')
+    
+    let countProductInCart = cart.reduce((total, product) => total + product.quantity, 0)
+
+    countProduct.innerHTML = `${countProductInCart}`
+   
 }
+
 
 
 // ** Nivell II **
