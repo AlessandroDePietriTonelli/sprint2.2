@@ -95,9 +95,9 @@ function validate(event) {
 	}
 }
 
-let form = document.getElementById('form');
 
-form.addEventListener('click',validate);
+
+document.getElementById('btn').addEventListener('click',validate);
 
 
 

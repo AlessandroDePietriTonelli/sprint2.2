@@ -100,6 +100,10 @@ function buy(id) {
 
 // Exercise 2
 function cleanCart() {
+    if(cart.length === 0){
+        alert('cart is empty');
+        return;
+    }
     let conf = confirm('Are you sure you want to empty the cart?')
     if (conf){
         cart = [];
@@ -200,3 +204,4 @@ function removeFromCart(id) {
 function open_modal() {
     printCart();
 }
+
