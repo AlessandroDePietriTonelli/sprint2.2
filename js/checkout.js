@@ -1,6 +1,7 @@
 // Exercise 6
-function validate() {
-	let error = 0;
+
+function validate(event) {
+	
 	// Get the input fields
 	let fName = document.getElementById("fName");
 	let fLastN = document.getElementById("fLastN");
@@ -88,12 +89,17 @@ function validate() {
 		fPhone.classList.remove("is-invalid");
 	}
 
-	if (!isValid) {
-		onclick.preventDefault()
+	if(!isValid) {	
+		event.preventDefault();	
+		event.stopPropagation();
 	}
-
-	
 }
+
+let form = document.getElementById('form');
+
+form.addEventListener('click',validate);
+
+
 
 
 

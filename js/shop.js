@@ -70,9 +70,9 @@ var products = [
 // ** Don't hesitate to seek help from your peers or your mentor if you still struggle with debugging.
 
 // Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
-var cart = [];
+let cart = [];
 
-var total = 0;
+let count = 0;
 
 // Exercise 1
 function buy(id) {
@@ -84,9 +84,11 @@ function buy(id) {
         let productInCart = cart.find(element => element.id === id)
 
         if(productInCart) {
-            productInCart.quantity ++
+            productInCart.quantity ++;
+            count ++;
         } else {
             cart.push({ ...productFind, quantity: 1})
+            count ++;
         }
     } 
 
@@ -100,7 +102,8 @@ function buy(id) {
 function cleanCart() {
     let conf = confirm('Are you sure you want to empty the cart?')
     if (conf){
-        cart = []
+        cart = [];
+        count = 0;
     }
     
     printCart()
@@ -117,7 +120,7 @@ function calculateTotal() {
         totalPrice += product.subtotalWithDiscount
     }
 
-    return totalPrice
+    return totalPrice.toFixed(2)
     
 }
 
@@ -155,7 +158,8 @@ function printCart() {
         	<th scope="row">${element.name}</th>
 			<td>${element.price}</td>
 			<td>${element.quantity}</td>
-			<td>${element.subtotalWithDiscount}</td>
+			<td>${element.subtotalWithDiscount.toFixed(2)}</td>
+            <td><button type="button" onclick="removeFromCart(${element.id})" class="btn btn-danger btn-sm">Rest</button></td>
         `
         cartList.appendChild(content)
     })
@@ -163,12 +167,11 @@ function printCart() {
     let showTotal = document.getElementById('total_price')
     showTotal.innerHTML = `${calculateTotal()}`
 
+    
     let countProduct = document.getElementById('count_product')
     
-    let countProductInCart = cart.reduce((total, product) => total + product.quantity, 0)
-
-    countProduct.innerHTML = `${countProductInCart}`
-   
+    countProduct.innerHTML = `${count}`
+    
 }
 
 
@@ -176,8 +179,22 @@ function printCart() {
 // ** Nivell II **
 
 // Exercise 7
-function removeFromCart(id) {
 
+function removeFromCart(id) {
+    let productIndex = cart.findIndex(product => product.id === id);
+    let product = cart[productIndex]
+    if ( product.quantity > 1) {
+        product.quantity --
+        count --
+        applyPromotionsCart()
+        calculateTotal()
+    } else {
+        cart.splice(productIndex,1)
+        count --
+        applyPromotionsCart()
+        calculateTotal()
+    }
+    printCart()
 }
 
 function open_modal() {
