@@ -134,22 +134,19 @@ function applyPromotionsCart() {
    
 
     for(let i = 0; i < cart.length; i++) {
-        let product = cart[i]
-        let productTotalPrice = product.price * product.quantity
-        
-        if (product.offer){
-            if(product.quantity >= product.offer.number){
-                product.subtotalWithDiscount = productTotalPrice - (productTotalPrice * (product.offer.percent / 100))
-            } else {
-                product.subtotalWithDiscount = productTotalPrice
-            }
+        let product = cart[i];
+        let productTotalPrice = product.price * product.quantity;
+
+        if (product.offer && product.quantity >= product.offer.number) {
+            product.subtotalWithDiscount = productTotalPrice - (productTotalPrice * (product.offer.percent / 100));
         } else {
-            product.subtotalWithDiscount = productTotalPrice
+            product.subtotalWithDiscount = productTotalPrice;
         }
     }
+}  
 
     
-}
+
 
 // Exercise 5
 function printCart() {
