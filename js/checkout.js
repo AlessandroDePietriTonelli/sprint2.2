@@ -96,8 +96,12 @@ function validate(event) {
 }
 
 
-
-document.getElementById('btn').addEventListener('click',validate);
+//document.getElementById('btn').addEventListener('click',validate);
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.id === 'btn') {
+        validate(event);
+    }
+});
 
 
 
